@@ -1,6 +1,7 @@
 # Clase 7 Ejemplo 1
 
--   Es una prueba
+-   Ejemplo 3:
+     https://caballeroarturo.github.io/clase7/Ejemplo3.html
 -   Este es un bullet
 
 ![imagen de prueba](Back_ATB_Experto.png)
