@@ -1,0 +1,63 @@
+---
+title: "Ejemplo 4. Lectura de archivos JSON"
+output: slidy_presentation
+date: "`r Sys.Date()`"
+---
+
+
+## Objetivo
+
+-   Realizar lectura de archivos JSON y XML para poder aplicar las funciones que se requieran de `R` y poder extraer información convirtiéndola en un data frame
+
+#### Requisitos
+
+-   librería `rjson`
+-   librería `XML`
+
+## Desarrollo
+
+Comenzaremos instalando los paquetes necesarios para después cargarlos a `R`
+
+```{r}
+#install.packages("rjson")   #Siempre usar comillas en el nombre del paquete
+
+library(rjson)            # Quitar comillas del nombre
+```
+
+## **Json**
+
+Vamos a leer un archivo Json de prueba alojado [aquí](https://tools.learningcontainer.com/sample-json-file.json)
+
+```{r}
+URL <- "https://tools.learningcontainer.com/sample-json-file.json" # Asignando el link a una variable
+
+JsonData <- fromJSON(file= URL)     # Se guarda el JSon en un objeto de R
+
+str(JsonData)
+
+```
+
+```{r}
+class(JsonData)                     # Vemos que tipo de objeto es JsonData
+```
+
+## Contenido
+
+```{r}
+str(JsonData)                       # Vemos la naturaleza de sus variables
+```
+
+Finalmente ya que pudimos acceder al contenido del Json, también podemos realizar la manipulación de los datos dentro del Json, por ejemplo:
+
+```{r}
+sqrt(JsonData$Mobile)
+```
+Para entrar a las demás variables recuerda que puedas usar el operador de `$`, es decir, `JsonData$`
+
+
+
+
+
+
+
+
