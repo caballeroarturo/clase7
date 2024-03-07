@@ -20,7 +20,7 @@ Comenzaremos instalando los paquetes necesarios para después cargarlos a `R`
 ```{r}
 #install.packages("rjson")   #Siempre usar comillas en el nombre del paquete
 
-library(rjson)            # Quitar comillas del nombre
+pacman::p_load(rjson,dplyr)            # Quitar comillas del nombre
 ```
 
 ## **Json**
@@ -51,12 +51,150 @@ Finalmente ya que pudimos acceder al contenido del Json, también podemos realiz
 ```{r}
 sqrt(JsonData$Mobile)
 ```
+
 Para entrar a las demás variables recuerda que puedas usar el operador de `$`, es decir, `JsonData$`
 
+## Convertir en Data Frame
+
+```{r}
+df <- as.data.frame(JsonData)
+class(df)
+```
+
+```{r}
+head(df)
+```
+
+# XML
+
+Ahora vamos a leer datos XML en `R`, utilizando un archivo XML alojado [aquí](http://www-db.deis.unibo.it/courses/TW/DOCS/w3schools/xml/cd_catalog.xml)
+
+Lo primero es instalar y cargar el paquete `XML` y alojar el link en una variable `link`, para su lectura
+
+```{r}
+pacman::p_load("XML")
+```
+
+```{r}
+link <- "http://www-db.deis.unibo.it/courses/TW/DOCS/w3schools/xml/cd_catalog.xml"
+
+# Analizando el XML desde la web
+xmlfile <- xmlTreeParse(link)
+```
+
+Ahora ya podemos ver las propiedades del objetvo `xmlfile`
+
+```{r}
+summary(xmlfile)
+#head(xmlfile, 1)
+```
+## `xmlTreeParse`
+
+También gracias al `xmlTreeParse` podemos extraer los datos contenidos en el archivo
+
+```{r}
+#Extraer los valores xml
+topxml <- xmlSApply(xmlfile, function(x) xmlSApply(x, xmlValue))
+class(topxml)
+```
+## Mostrar como Data Frame
+
+```{r}
+# Colocandolos en un Data Frame
+xml_df <- data.frame(t(topxml), row.names= NULL)
+
+str(xml_df) # Observar la naturaleza de las variables del DF
+```
+```{r}
+head(xml_df, n=3)
+```
+
+## Modificar datos
+
+Convertiremos incluso las variables de `PRICE` y `YEAR` en datos numéricos para poder realizar operaciones con este dato
+
+```{r}
+xml_df <- xml_df %>% mutate(PRICE = as.numeric(PRICE),
+                  YEAR  = as.numeric(YEAR))
+
+mean(xml_df$PRICE)
+round(mean(xml_df$YEAR),0)
+```
+
+## Alternativa fácil
+
+Todo esto se puede realizar en un solo paso utilizando el siguiente comando
+
+```{r}
+data_df <- xmlToDataFrame(link)
+head(data_df)
+```
+
+# Tablas en HTML
+
+Comenzamos instalando el paquete `rvest` el cual nos permitirá realizar la lectura de la tabla en el HTML
+
+```{r}
+pacman::p_load(rvest)
+```
+
+Introducimos una dirección URL donde se encuentre una tabla
+
+```{r}
+theurl <- "https://solarviews.com/span/data2.htm"
+file <- read_html(theurl)    # Leemos el html
+```
 
 
+## Nodos
+
+Selecciona pedazos dentro del HTML para identificar la tabla
+
+```{r}
+tables <- html_nodes(file, "table")  
+```
+
+```{r}
+tables
+```
+
+Hay que analizar 'tables' para determinar cual es la posición en la lista que contiene la tabla, en este caso es la no. 4
+
+## Extraer los datos
+
+Extraemos la tabla de acuerdo a la posición en la lista
+
+```{r}
+table1 <- html_table(tables[4], fill = TRUE)
+str(table1)
+```
+
+## Cuidado
+
+Eliminar renglones con al menos un vacio en una columnas es una alteración a los datos, por lo que puede ocasionar que estemos perdiendo información o que nuestros analisis tengan alguna desviación. 
+
+```{r}
+
+table <- na.omit(as.data.frame(table1))   # Quitamos NA´s que meten filas extras y convertimos la lista en un data frame para su manipulación con R
+
+str(table)  # Vemos la naturaleza de las variables
+```
+
+## Modificar datos 
+
+Por último realizamos una conversión de una columna tipo `chr` a `num`, se pueden hacer las conversiones que se requieran
+
+```{r}
+names(table)
+```
+```{r}
+pacman::p_load(janitor)
+table <- table %>% clean_names()
+names(table)
+```
 
 
-
-
-
+```{r, warning=FALSE,message=FALSE}
+table <- table %>% mutate(albedo = as.numeric(albedo))
+str(table)
+```

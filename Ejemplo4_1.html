@@ -527,8 +527,9 @@ list-style-type: none;
   </p>
   <p class="date">2024-03-06</p>
 </div>
-<div id="objetivo" class="slide section level2">
-<h1>Objetivo</h1>
+<div class="slide section level1">
+
+<h2 id="objetivo">Objetivo</h2>
 <ul>
 <li>Realizar lectura de archivos JSON y XML para poder aplicar las
 funciones que se requieran de <code>R</code> y poder extraer información
@@ -539,17 +540,13 @@ convirtiéndola en un data frame</li>
 <li>librería <code>rjson</code></li>
 <li>librería <code>XML</code></li>
 </ul>
-</div>
-<div id="desarrollo" class="slide section level2">
-<h1>Desarrollo</h1>
+<h2 id="desarrollo">Desarrollo</h2>
 <p>Comenzaremos instalando los paquetes necesarios para después
 cargarlos a <code>R</code></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#install.packages(&quot;rjson&quot;)   #Siempre usar comillas en el nombre del paquete</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(rjson)            <span class="co"># Quitar comillas del nombre</span></span></code></pre></div>
-</div>
-<div id="json" class="slide section level2">
-<h1><strong>Json</strong></h1>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(rjson,dplyr)            <span class="co"># Quitar comillas del nombre</span></span></code></pre></div>
+<h2 id="json"><strong>Json</strong></h2>
 <p>Vamos a leer un archivo Json de prueba alojado <a href="https://tools.learningcontainer.com/sample-json-file.json">aquí</a></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>URL <span class="ot">&lt;-</span> <span class="st">&quot;https://tools.learningcontainer.com/sample-json-file.json&quot;</span> <span class="co"># Asignando el link a una variable</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
@@ -566,9 +563,7 @@ cargarlos a <code>R</code></p>
 ##   ..$ current Address  : chr &quot;AU&quot;</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">class</span>(JsonData)                     <span class="co"># Vemos que tipo de objeto es JsonData</span></span></code></pre></div>
 <pre><code>## [1] &quot;list&quot;</code></pre>
-</div>
-<div id="contenido" class="slide section level2">
-<h1>Contenido</h1>
+<h2 id="contenido">Contenido</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">str</span>(JsonData)                       <span class="co"># Vemos la naturaleza de sus variables</span></span></code></pre></div>
 <pre><code>## List of 5
 ##  $ Name   : chr &quot;Test&quot;
@@ -585,6 +580,156 @@ ejemplo:</p>
 <pre><code>## [1] 3513.642</code></pre>
 <p>Para entrar a las demás variables recuerda que puedas usar el
 operador de <code>$</code>, es decir, <code>JsonData$</code></p>
+<h2 id="convertir-en-data-frame">Convertir en Data Frame</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(JsonData)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">class</span>(df)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">head</span>(df)</span></code></pre></div>
+<pre><code>##   Name   Mobile Boolean Pets Address.Permanent.address Address.current.Address
+## 1 Test 12345678    TRUE  Dog                       USA                      AU
+## 2 Test 12345678    TRUE  cat                       USA                      AU</code></pre>
+</div>
+<div id="xml" class="slide section level1">
+<h1>XML</h1>
+<p>Ahora vamos a leer datos XML en <code>R</code>, utilizando un archivo
+XML alojado <a href="http://www-db.deis.unibo.it/courses/TW/DOCS/w3schools/xml/cd_catalog.xml">aquí</a></p>
+<p>Lo primero es instalar y cargar el paquete <code>XML</code> y alojar
+el link en una variable <code>link</code>, para su lectura</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(<span class="st">&quot;XML&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>link <span class="ot">&lt;-</span> <span class="st">&quot;http://www-db.deis.unibo.it/courses/TW/DOCS/w3schools/xml/cd_catalog.xml&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co"># Analizando el XML desde la web</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>xmlfile <span class="ot">&lt;-</span> <span class="fu">xmlTreeParse</span>(link)</span></code></pre></div>
+<p>Ahora ya podemos ver las propiedades del objetvo
+<code>xmlfile</code></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">summary</span>(xmlfile)</span></code></pre></div>
+<pre><code>##     Length Class              Mode
+## doc 3      XMLDocumentContent list
+## dtd 2      DTDList            list</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co">#head(xmlfile, 1)</span></span></code></pre></div>
+<h2 id="xmltreeparse"><code>xmlTreeParse</code></h2>
+<p>También gracias al <code>xmlTreeParse</code> podemos extraer los
+datos contenidos en el archivo</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co">#Extraer los valores xml</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>topxml <span class="ot">&lt;-</span> <span class="fu">xmlSApply</span>(xmlfile, <span class="cf">function</span>(x) <span class="fu">xmlSApply</span>(x, xmlValue))</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="fu">class</span>(topxml)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<h2 id="mostrar-como-data-frame">Mostrar como Data Frame</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co"># Colocandolos en un Data Frame</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>xml_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(topxml), <span class="at">row.names=</span> <span class="cn">NULL</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="fu">str</span>(xml_df) <span class="co"># Observar la naturaleza de las variables del DF</span></span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    26 obs. of  6 variables:
+##  $ TITLE  : chr  &quot;Empire Burlesque&quot; &quot;Hide your heart&quot; &quot;Greatest Hits&quot; &quot;Still got the blues&quot; ...
+##  $ ARTIST : chr  &quot;Bob Dylan&quot; &quot;Bonnie Tyler&quot; &quot;Dolly Parton&quot; &quot;Gary Moore&quot; ...
+##  $ COUNTRY: chr  &quot;USA&quot; &quot;UK&quot; &quot;USA&quot; &quot;UK&quot; ...
+##  $ COMPANY: chr  &quot;Columbia&quot; &quot;CBS Records&quot; &quot;RCA&quot; &quot;Virgin records&quot; ...
+##  $ PRICE  : chr  &quot;10.90&quot; &quot;9.90&quot; &quot;9.90&quot; &quot;10.20&quot; ...
+##  $ YEAR   : chr  &quot;1985&quot; &quot;1988&quot; &quot;1982&quot; &quot;1990&quot; ...</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">head</span>(xml_df, <span class="at">n=</span><span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##              TITLE       ARTIST COUNTRY     COMPANY PRICE YEAR
+## 1 Empire Burlesque    Bob Dylan     USA    Columbia 10.90 1985
+## 2  Hide your heart Bonnie Tyler      UK CBS Records  9.90 1988
+## 3    Greatest Hits Dolly Parton     USA         RCA  9.90 1982</code></pre>
+<h2 id="modificar-datos">Modificar datos</h2>
+<p>Convertiremos incluso las variables de <code>PRICE</code> y
+<code>YEAR</code> en datos numéricos para poder realizar operaciones con
+este dato</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>xml_df <span class="ot">&lt;-</span> xml_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">PRICE =</span> <span class="fu">as.numeric</span>(PRICE),</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>                  <span class="at">YEAR  =</span> <span class="fu">as.numeric</span>(YEAR))</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="fu">mean</span>(xml_df<span class="sc">$</span>PRICE)</span></code></pre></div>
+<pre><code>## [1] 9.115385</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">mean</span>(xml_df<span class="sc">$</span>YEAR),<span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 1989</code></pre>
+<h2 id="alternativa-fácil">Alternativa fácil</h2>
+<p>Todo esto se puede realizar en un solo paso utilizando el siguiente
+comando</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>data_df <span class="ot">&lt;-</span> <span class="fu">xmlToDataFrame</span>(link)</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="fu">head</span>(data_df)</span></code></pre></div>
+<pre><code>##                 TITLE          ARTIST COUNTRY        COMPANY PRICE YEAR
+## 1    Empire Burlesque       Bob Dylan     USA       Columbia 10.90 1985
+## 2     Hide your heart    Bonnie Tyler      UK    CBS Records  9.90 1988
+## 3       Greatest Hits    Dolly Parton     USA            RCA  9.90 1982
+## 4 Still got the blues      Gary Moore      UK Virgin records 10.20 1990
+## 5                Eros Eros Ramazzotti      EU            BMG  9.90 1997
+## 6      One night only        Bee Gees      UK        Polydor 10.90 1998</code></pre>
+</div>
+<div id="tablas-en-html" class="slide section level1">
+<h1>Tablas en HTML</h1>
+<p>Comenzamos instalando el paquete <code>rvest</code> el cual nos
+permitirá realizar la lectura de la tabla en el HTML</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(rvest)</span></code></pre></div>
+<p>Introducimos una dirección URL donde se encuentre una tabla</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>theurl <span class="ot">&lt;-</span> <span class="st">&quot;https://solarviews.com/span/data2.htm&quot;</span></span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">read_html</span>(theurl)    <span class="co"># Leemos el html</span></span></code></pre></div>
+<h2 id="nodos">Nodos</h2>
+<p>Selecciona pedazos dentro del HTML para identificar la tabla</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">html_nodes</span>(file, <span class="st">&quot;table&quot;</span>)  </span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>tables</span></code></pre></div>
+<pre><code>## {xml_nodeset (6)}
+## [1] &lt;table border=&quot;2&quot; bgcolor=&quot;#0&quot; width=&quot;100%&quot; cellspacing=&quot;2&quot; cellpadding=&quot; ...
+## [2] &lt;table border=&quot;2&quot; width=&quot;100%&quot; bgcolor=&quot;#0&quot;&gt;&lt;th&gt;&lt;font color=&quot;#ffffc0&quot; siz ...
+## [3] &lt;table border=&quot;2&quot; width=&quot;100%&quot; bgcolor=&quot;#0&quot;&gt;\n&lt;a name=&quot;phy&quot;&gt;&lt;/a&gt;&lt;th&gt;&lt;font ...
+## [4] &lt;table border&gt;\n&lt;tr align=&quot;CENTER&quot;&gt;\n&lt;th&gt;Nombre&lt;/th&gt;\n&lt;th&gt;Vo&lt;/th&gt;\n&lt;th&gt;Di ...
+## [5] &lt;table border=&quot;2&quot; width=&quot;100%&quot; bgcolor=&quot;#0&quot;&gt;&lt;th&gt;&lt;font size=&quot;-2&quot;&gt; &lt;/font&gt;&lt; ...
+## [6] &lt;table border=&quot;2&quot; width=&quot;100%&quot; bgcolor=&quot;#0&quot;&gt;&lt;th&gt;&lt;font size=&quot;-2&quot;&gt; &lt;/font&gt;&lt; ...</code></pre>
+<p>Hay que analizar ‘tables’ para determinar cual es la posición en la
+lista que contiene la tabla, en este caso es la no. 4</p>
+<h2 id="extraer-los-datos">Extraer los datos</h2>
+<p>Extraemos la tabla de acuerdo a la posición en la lista</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>table1 <span class="ot">&lt;-</span> <span class="fu">html_table</span>(tables[<span class="dv">4</span>], <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="fu">str</span>(table1)</span></code></pre></div>
+<pre><code>## List of 1
+##  $ : tibble [71 × 8] (S3: tbl_df/tbl/data.frame)
+##   ..$ Nombre           : chr [1:71] &quot;Sol&quot; &quot;Mercurio&quot; &quot;Venus&quot; &quot;Tierra&quot; ...
+##   ..$ Vo               : chr [1:71] &quot;-26.8&quot; &quot;-1.9&quot; &quot;-4.4&quot; &quot;-&quot; ...
+##   ..$ Distancia(103 km): chr [1:71] &quot;0&quot; &quot;57,910&quot; &quot;108,200&quot; &quot;149,600&quot; ...
+##   ..$ Radio(km)        : chr [1:71] &quot;695000&quot; &quot;2439.7&quot; &quot;6051.8&quot; &quot;6378.14&quot; ...
+##   ..$ Masa(kg)         : chr [1:71] &quot;1.989e+30&quot; &quot;3.303e+23&quot; &quot;4.869e+24&quot; &quot;5.976e+24&quot; ...
+##   ..$ Densidad(g/cm3)  : chr [1:71] &quot;1.410&quot; &quot;5.42&quot; &quot;5.25&quot; &quot;5.515&quot; ...
+##   ..$ V. Escape(km/s)  : chr [1:71] &quot;618.02&quot; &quot;4.2507&quot; &quot;10.362&quot; &quot;11.182&quot; ...
+##   ..$ Albedo           : chr [1:71] &quot;-&quot; &quot;0.10&quot; &quot;0.65&quot; &quot;0.37&quot; ...</code></pre>
+<h2 id="cuidado">Cuidado</h2>
+<p>Eliminar renglones con al menos un vacio en una columnas es una
+alteración a los datos, por lo que puede ocasionar que estemos perdiendo
+información o que nuestros analisis tengan alguna desviación.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>table <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">as.data.frame</span>(table1))   <span class="co"># Quitamos NA´s que meten filas extras y convertimos la lista en un data frame para su manipulación con R</span></span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a><span class="fu">str</span>(table)  <span class="co"># Vemos la naturaleza de las variables</span></span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    71 obs. of  8 variables:
+##  $ Nombre           : chr  &quot;Sol&quot; &quot;Mercurio&quot; &quot;Venus&quot; &quot;Tierra&quot; ...
+##  $ Vo               : chr  &quot;-26.8&quot; &quot;-1.9&quot; &quot;-4.4&quot; &quot;-&quot; ...
+##  $ Distancia.103.km.: chr  &quot;0&quot; &quot;57,910&quot; &quot;108,200&quot; &quot;149,600&quot; ...
+##  $ Radio.km.        : chr  &quot;695000&quot; &quot;2439.7&quot; &quot;6051.8&quot; &quot;6378.14&quot; ...
+##  $ Masa.kg.         : chr  &quot;1.989e+30&quot; &quot;3.303e+23&quot; &quot;4.869e+24&quot; &quot;5.976e+24&quot; ...
+##  $ Densidad.g.cm3.  : chr  &quot;1.410&quot; &quot;5.42&quot; &quot;5.25&quot; &quot;5.515&quot; ...
+##  $ V..Escape.km.s.  : chr  &quot;618.02&quot; &quot;4.2507&quot; &quot;10.362&quot; &quot;11.182&quot; ...
+##  $ Albedo           : chr  &quot;-&quot; &quot;0.10&quot; &quot;0.65&quot; &quot;0.37&quot; ...</code></pre>
+<h2 id="modificar-datos-1">Modificar datos</h2>
+<p>Por último realizamos una conversión de una columna tipo
+<code>chr</code> a <code>num</code>, se pueden hacer las conversiones
+que se requieran</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="fu">names</span>(table)</span></code></pre></div>
+<pre><code>## [1] &quot;Nombre&quot;            &quot;Vo&quot;                &quot;Distancia.103.km.&quot;
+## [4] &quot;Radio.km.&quot;         &quot;Masa.kg.&quot;          &quot;Densidad.g.cm3.&quot;  
+## [7] &quot;V..Escape.km.s.&quot;   &quot;Albedo&quot;</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(janitor)</span>
+<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a>table <span class="ot">&lt;-</span> table <span class="sc">%&gt;%</span> <span class="fu">clean_names</span>()</span>
+<span id="cb42-3"><a href="#cb42-3" tabindex="-1"></a><span class="fu">names</span>(table)</span></code></pre></div>
+<pre><code>## [1] &quot;nombre&quot;           &quot;vo&quot;               &quot;distancia_103_km&quot; &quot;radio_km&quot;        
+## [5] &quot;masa_kg&quot;          &quot;densidad_g_cm3&quot;   &quot;v_escape_km_s&quot;    &quot;albedo&quot;</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>table <span class="ot">&lt;-</span> table <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">albedo =</span> <span class="fu">as.numeric</span>(albedo))</span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="fu">str</span>(table)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    71 obs. of  8 variables:
+##  $ nombre          : chr  &quot;Sol&quot; &quot;Mercurio&quot; &quot;Venus&quot; &quot;Tierra&quot; ...
+##  $ vo              : chr  &quot;-26.8&quot; &quot;-1.9&quot; &quot;-4.4&quot; &quot;-&quot; ...
+##  $ distancia_103_km: chr  &quot;0&quot; &quot;57,910&quot; &quot;108,200&quot; &quot;149,600&quot; ...
+##  $ radio_km        : chr  &quot;695000&quot; &quot;2439.7&quot; &quot;6051.8&quot; &quot;6378.14&quot; ...
+##  $ masa_kg         : chr  &quot;1.989e+30&quot; &quot;3.303e+23&quot; &quot;4.869e+24&quot; &quot;5.976e+24&quot; ...
+##  $ densidad_g_cm3  : chr  &quot;1.410&quot; &quot;5.42&quot; &quot;5.25&quot; &quot;5.515&quot; ...
+##  $ v_escape_km_s   : chr  &quot;618.02&quot; &quot;4.2507&quot; &quot;10.362&quot; &quot;11.182&quot; ...
+##  $ albedo          : num  NA 0.1 0.65 0.37 0.12 0.15 0.06 0.07 0.52 0.05 ...</code></pre>
 </div>
 
   <!-- dynamically load mathjax for compatibility with self-contained -->
